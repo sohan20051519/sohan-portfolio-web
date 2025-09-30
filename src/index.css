@@ -1,0 +1,245 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Modern Portfolio Design System - All colors in HSL */
+
+@layer base {
+  :root {
+    /* Core Colors */
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    
+    /* Surface Colors */
+    --surface: 240 6% 8%;
+    --surface-elevated: 240 6% 12%;
+    --surface-glass: 240 6% 8% / 0.8;
+    
+    /* Brand Colors */
+    --primary: 220 90% 56%;
+    --primary-glow: 220 90% 66%;
+    --secondary: 280 85% 60%;
+    --accent: 200 100% 70%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(220 90% 56%), hsl(280 85% 60%));
+    --gradient-surface: linear-gradient(135deg, hsl(240 6% 8% / 0.8), hsl(240 6% 12% / 0.9));
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(220 90% 56% / 0.2), transparent 70%);
+    
+    /* Text Colors */
+    --text-primary: 0 0% 98%;
+    --text-secondary: 0 0% 80%;
+    --text-muted: 0 0% 65%;
+    
+    /* Border & Effects */
+    --border: 240 6% 20%;
+    --border-elevated: 240 6% 25%;
+    --shadow-glow: 0 0 40px hsl(220 90% 56% / 0.15);
+    --shadow-elevated: 0 10px 30px -10px hsl(240 6% 3% / 0.3);
+    
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* Legacy shadcn colors for compatibility */
+
+    --card: 240 6% 8%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 6% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 220 90% 56%;
+    --primary-foreground: 240 10% 3.9%;
+
+    --secondary: 240 6% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 6% 15%;
+    --muted-foreground: 0 0% 65%;
+
+    --accent: 280 85% 60%;
+    --accent-foreground: 240 10% 3.9%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 6% 20%;
+    --input: 240 6% 15%;
+    --ring: 220 90% 56%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .light {
+    /* Light theme overrides */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    
+    --surface: 0 0% 98%;
+    --surface-elevated: 0 0% 95%;
+    --surface-glass: 0 0% 100% / 0.9;
+    
+    --text-primary: 240 10% 3.9%;
+    --text-secondary: 240 6% 25%;
+    --text-muted: 240 5% 45%;
+    
+    --border: 240 6% 90%;
+    --border-elevated: 240 6% 85%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    
+    --secondary: 240 6% 95%;
+    --secondary-foreground: 240 10% 3.9%;
+    
+    --muted: 240 6% 95%;
+    --muted-foreground: 240 5% 45%;
+    
+    --input: 240 6% 95%;
+    --shadow-elevated: 0 10px 30px -10px rgba(15, 23, 42, 0.1);
+    --shadow-glow: 0 0 40px hsl(220 90% 56% / 0.1);
+    
+    /* Light theme gradients */
+    --gradient-glow: radial-gradient(circle at 50% 50%, hsl(220 90% 56% / 0.05), transparent 70%);
+    --gradient-surface: linear-gradient(135deg, hsl(0 0% 98% / 0.9), hsl(0 0% 95% / 0.95));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    /* Avoid global smooth scrolling which can conflict with JS-driven scroll and cause jank */
+    scroll-behavior: auto;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter antialiased;
+    background-image: var(--gradient-glow);
+    /* Fixed backgrounds can cause scroll jank on some GPUs; use scroll */
+    background-attachment: scroll;
+    background-size: cover;
+    background-position: center;
+  }
+}
+
+@layer components {
+  /* Glass morphism utility */
+  .glass {
+    @apply backdrop-blur-xl;
+    background: hsl(var(--surface-glass));
+    border: 1px solid hsl(var(--border-elevated));
+  }
+  
+  /* Light theme glass adjustments */
+  .light .glass {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.05);
+  }
+  
+  /* Floating animation */
+  .floating {
+    animation: floating 6s ease-in-out infinite;
+  }
+  
+  /* Glow effect */
+  .glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* Gradient text */
+  .gradient-text {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Hero section styling */
+  .hero-bg {
+    background: var(--gradient-surface);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .hero-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-glow);
+    opacity: 0.3;
+    z-index: 0;
+  }
+}
+
+@layer utilities {
+  /* 3D Perspective for stacked cards */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  /* Animation keyframes */
+  @keyframes floating {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  /* Animation classes */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.6s ease-out forwards;
+  }
+}
