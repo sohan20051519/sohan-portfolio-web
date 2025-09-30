@@ -28,6 +28,11 @@ const ScrollStack = ({
   const cardsRef = useRef([]);
   const lastTransformsRef = useRef(new Map());
   const isUpdatingRef = useRef(false);
+  // Cache element offsets to avoid transform-induced jitter
+  const offsetsCacheRef = useRef(new WeakMap());
+  const resizeObserverRef = useRef(null);
+  const windowScrollListenerAddedRef = useRef(false);
+  const isCoarsePointerRef = useRef(false);
 
   const calculateProgress = useCallback((scrollTop, start, end) => {
     if (scrollTop < start) return 0;
@@ -62,12 +67,12 @@ const ScrollStack = ({
   const getElementOffset = useCallback(
     element => {
       if (useWindowScroll) {
-        // Cache the initial offset to avoid repeated getBoundingClientRect calls
-        if (!element._cachedOffset) {
-          const rect = element.getBoundingClientRect();
-          element._cachedOffset = rect.top + window.scrollY;
-        }
-        return element._cachedOffset;
+        const cached = offsetsCacheRef.current.get(element);
+        if (typeof cached === 'number') return cached;
+        const rect = element.getBoundingClientRect();
+        const value = rect.top + window.scrollY;
+        offsetsCacheRef.current.set(element, value);
+        return value;
       } else {
         return element.offsetTop;
       }
@@ -101,8 +106,9 @@ const ScrollStack = ({
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
       const targetScale = baseScale + i * itemScale;
-      const scale = 1 - scaleProgress * (1 - targetScale);
-      const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
+      const disableHeavy = isCoarsePointerRef.current === true;
+      const scale = disableHeavy ? 1 : 1 - scaleProgress * (1 - targetScale);
+      const rotation = disableHeavy ? 0 : (rotationAmount ? i * rotationAmount * scaleProgress : 0);
 
       let translateY = 0;
       const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
@@ -117,7 +123,8 @@ const ScrollStack = ({
       }
 
       const newTransform = {
-        translateY: Math.round(translateY * 100) / 100,
+        // Use whole pixels to avoid subpixel rounding jitter in some Chromium forks
+        translateY: Math.round(translateY),
         scale: Math.round(scale * 1000) / 1000,
         rotation: Math.round(rotation * 100) / 100,
       };
@@ -130,7 +137,9 @@ const ScrollStack = ({
         Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1;
 
       if (hasChanged) {
-        const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
+        const transform = isCoarsePointerRef.current
+          ? `translate3d(0, ${newTransform.translateY}px, 0)`
+          : `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
         card.style.transform = transform;
         lastTransformsRef.current.set(i, newTransform);
       }
@@ -176,6 +185,19 @@ const ScrollStack = ({
     if (useWindowScroll) {
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const isFinePointer = window.matchMedia('(pointer: fine)').matches;
+      const isCoarse = window.matchMedia('(pointer: coarse)').matches;
+      isCoarsePointerRef.current = isCoarse;
+      // On coarse/touch devices, skip Lenis and rely on native scroll + rAF
+      if (isCoarse) {
+        if (!windowScrollListenerAddedRef.current) {
+          window.addEventListener('scroll', handleScroll, { passive: true });
+          windowScrollListenerAddedRef.current = true;
+        }
+        animationFrameRef.current = requestAnimationFrame(() => updateCardTransforms());
+        (lenisRef.current as any) = { __native: true, destroy: () => {} } as any;
+        (window as any).lenis = undefined;
+        return lenisRef.current as any;
+      }
       const lenis = new Lenis({
         duration: prefersReduced ? 0.6 : 1.0,
         easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -188,6 +210,13 @@ const ScrollStack = ({
       });
 
       lenis.on('scroll', handleScroll);
+
+      // Mobile/touch fallback: also listen to native window scroll so transforms
+      // update even when smooth scrolling is disabled
+      if (!isFinePointer && !windowScrollListenerAddedRef.current) {
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        windowScrollListenerAddedRef.current = true;
+      }
 
       const raf = time => {
         lenis.raf(time);
@@ -261,21 +290,54 @@ const ScrollStack = ({
       card.style.webkitTransform = 'translateZ(0)';
       card.style.perspective = '1000px';
       card.style.webkitPerspective = '1000px';
-      // Clear cached offset to force recalculation
-      card._cachedOffset = null;
+      // Strengthen isolation to reduce layout thrash in some browsers
+      (card as any).style.contain = 'layout paint style';
+      // Precompute and cache offsets up front for stability
+      if (useWindowScroll) {
+        const rect = card.getBoundingClientRect();
+        offsetsCacheRef.current.set(card, rect.top + window.scrollY);
+      }
     });
+
+    // Also cache the end spacer position
+    if (useWindowScroll) {
+      const endEl = document.querySelector('.scroll-stack-end');
+      if (endEl) {
+        const rect = endEl.getBoundingClientRect();
+        offsetsCacheRef.current.set(endEl, rect.top + window.scrollY);
+      }
+    }
 
     setupLenis();
 
     // Recalculate cached offsets on resize/orientation to avoid jitter
     const handleResize = () => {
       lastTransformsRef.current.clear();
-      const cards = cardsRef.current;
-      cards.forEach((card: any) => {
-        card._cachedOffset = null;
+      offsetsCacheRef.current = new WeakMap();
+      // Pre-cache again after a tick
+      requestAnimationFrame(() => {
+        cardsRef.current.forEach((card: any) => {
+          if (useWindowScroll) {
+            const rect = card.getBoundingClientRect();
+            offsetsCacheRef.current.set(card, rect.top + window.scrollY);
+          }
+        });
+        const endEl = useWindowScroll ? document.querySelector('.scroll-stack-end') : scrollerRef.current?.querySelector('.scroll-stack-end');
+        if (endEl && useWindowScroll) {
+          const rect = (endEl as Element).getBoundingClientRect();
+          offsetsCacheRef.current.set(endEl as Element, rect.top + window.scrollY);
+        }
+        updateCardTransforms();
       });
-      updateCardTransforms();
     };
+    // Observe layout changes to invalidate cache
+    if (useWindowScroll && 'ResizeObserver' in window) {
+      const ro = new ResizeObserver(() => handleResize());
+      resizeObserverRef.current = ro as any;
+      const container = document.querySelector('.scroll-stack-inner');
+      if (container) ro.observe(container);
+      cards.forEach(card => ro.observe(card));
+    }
     window.addEventListener('resize', handleResize);
     window.addEventListener('orientationchange', handleResize);
 
@@ -288,12 +350,22 @@ const ScrollStack = ({
       if (lenisRef.current) {
         lenisRef.current.destroy();
       }
+      if (windowScrollListenerAddedRef.current) {
+        window.removeEventListener('scroll', handleScroll as any);
+        windowScrollListenerAddedRef.current = false;
+      }
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('orientationchange', handleResize);
+      if (resizeObserverRef.current) {
+        try {
+          resizeObserverRef.current.disconnect();
+        } catch {}
+      }
       stackCompletedRef.current = false;
       cardsRef.current = [];
       transformsCache.clear();
       isUpdatingRef.current = false;
+      offsetsCacheRef.current = new WeakMap();
     };
   }, [
     itemDistance,

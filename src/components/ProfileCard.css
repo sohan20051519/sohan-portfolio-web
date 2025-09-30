@@ -469,6 +469,17 @@
 }
 
 @media (max-width: 768px) {
+  /* Ensure the profile card wrapper and card are perfectly centered on mobile */
+  .pc-card-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .pc-card {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .pc-card {
     height: 70svh;
     max-height: 450px;

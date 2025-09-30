@@ -44,7 +44,7 @@ export function HeroSection() {
         </div>
 
         {/* Content with responsive layout */}
-        <div className="container mx-auto px-4 relative z-20">
+        <div className="container mx-auto px-0 sm:px-4 relative z-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div className="max-w-3xl text-center lg:text-left">
             <Badge variant="secondary" className="mb-6 px-4 py-2 text-sm font-medium">
@@ -56,8 +56,8 @@ export function HeroSection() {
             </h1>
 
             {/* Profile Card - Mobile only (between name and title) */}
-            <div className="flex justify-center mb-8 lg:hidden">
-              <div className="w-[300px] sm:w-[350px]">
+            <div className="w-full grid place-items-center mb-8 lg:hidden px-4">
+              <div className="w-[300px] sm:w-[350px] mx-auto">
                 <ProfileCard
                   name="Sohan A"
                   title="Full-Stack Developer"
@@ -69,6 +69,8 @@ export function HeroSection() {
                   className="pc-muted"
                   showBehindGradient={false}
                   innerGradient="linear-gradient(145deg,#0f172a 0%, #1f2a44 100%)"
+                  behindGradient={undefined}
+                  miniAvatarUrl={undefined}
                   enableTilt={true}
                   enableMobileTilt={false}
                   onContactClick={() => window.open('https://linkedin.com/in/sohan2005', '_blank', 'noopener,noreferrer')}
@@ -145,6 +147,8 @@ export function HeroSection() {
                   className="pc-muted"
                   showBehindGradient={false}
                   innerGradient="linear-gradient(145deg,#0f172a 0%, #1f2a44 100%)"
+                  behindGradient={undefined}
+                  miniAvatarUrl={undefined}
                   enableTilt={true}
                   enableMobileTilt={false}
                   onContactClick={() => window.open('https://linkedin.com/in/sohan2005', '_blank', 'noopener,noreferrer')}
