@@ -114,7 +114,7 @@ export function SkillsSection() {
                   speed={40}
                   maxIterations={12}
                   revealDirection="center"
-                  className="text-text-secondary leading-relaxed"
+                  className="text-text-secondary leading-relaxed text-left sm:text-center"
                   encryptedClassName="text-text-secondary/50"
                 />
               </CardContent>
