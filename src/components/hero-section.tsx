@@ -26,7 +26,7 @@ export function HeroSection() {
   return (
     <>
       {/* HERO with DotGrid background */}
-      <section id="home" className="min-h-[100svh] flex items-start justify-center pt-6 sm:items-center sm:pt-0 relative overflow-hidden bg-slate-900">
+      <section id="home" className="min-h-[100svh] flex items-center justify-center relative overflow-hidden bg-slate-900">
         {/* Dot Grid Background */}
         <div style={{ width: '100%', height: '100%', position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
           <DotGrid
