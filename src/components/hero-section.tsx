@@ -47,16 +47,16 @@ export function HeroSection() {
         <div className="container mx-auto px-0 sm:px-4 relative z-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
             <div className="max-w-3xl text-center lg:text-left">
-            <Badge variant="secondary" className="mb-2 sm:mb-6 px-3 py-1 text-xs sm:text-sm font-medium">
+            <Badge variant="secondary" className="mb-3 sm:mb-6 px-3 py-1 text-xs sm:text-sm font-medium">
               Available for Opportunities
             </Badge>
 
-            <h1 className="text-3xl sm:text-6xl lg:text-7xl font-bold mb-2 sm:mb-6 animate-fade-in-up [animation-delay:0.1s] opacity-0">
+            <h1 className="text-3xl sm:text-6xl lg:text-7xl font-bold mb-3 sm:mb-6 animate-fade-in-up [animation-delay:0.1s] opacity-0">
               <span className="gradient-text">Sohan A</span>
             </h1>
 
             {/* Profile Card - Mobile only (between name and title) */}
-            <div className="w-full grid place-items-center mb-3 sm:mb-8 lg:hidden px-4">
+            <div className="w-full grid place-items-center mb-4 sm:mb-8 lg:hidden px-4">
               <div className="w-[200px] sm:w-[350px] mx-auto">
                 <ProfileCard
                   name="Sohan A"
@@ -78,11 +78,11 @@ export function HeroSection() {
               </div>
             </div>
 
-            <p className="text-sm sm:text-2xl text-text-secondary mb-2 sm:mb-8 animate-fade-in-up [animation-delay:0.2s] opacity-0">
+            <p className="text-sm sm:text-2xl text-text-secondary mb-3 sm:mb-8 animate-fade-in-up [animation-delay:0.2s] opacity-0">
               Full Stack Developer & DevOps Engineer
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-2 justify-center lg:justify-start items-center lg:items-start mb-2 sm:mb-12 animate-fade-in-up [animation-delay:0.3s] opacity-0">
+            <div className="flex flex-col sm:flex-row gap-2 justify-center lg:justify-start items-center lg:items-start mb-3 sm:mb-12 animate-fade-in-up [animation-delay:0.3s] opacity-0">
               <Button 
                 size="sm"
                 className="bg-white text-black hover:bg-white/90 px-6 py-2"
