@@ -214,13 +214,13 @@ export function CertificatesSection() {
           <div className="mt-16 text-center">
             <Card className="glass border-border-elevated max-w-4xl mx-auto">
               <CardContent className="p-8">
-                <div className="flex items-center justify-center mb-4">
-                  <Award className="h-8 w-8 text-primary mr-3" />
-                  <h3 className="text-2xl font-semibold gradient-text">
+                <div className="mb-4">
+                  <Award className="h-8 w-8 text-primary mr-3 inline-block align-middle" />
+                  <h3 className="text-2xl font-semibold gradient-text inline-block align-middle">
                     Continuous Learning
                   </h3>
                 </div>
-                <p className="text-text-secondary leading-relaxed">
+                <p className="text-text-secondary leading-relaxed text-left sm:text-center">
                   Committed to staying current with industry trends and emerging technologies. 
                   These certifications represent a foundation of continuous professional development 
                   and hands-on experience across multiple technology domains.
