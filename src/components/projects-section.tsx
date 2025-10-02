@@ -105,7 +105,7 @@ export function ProjectsSection() {
   }
 
   return (
-    <section id="projects" className="pt-24 lg:pt-32 pb-40 relative overflow-visible scroll-mt-24 md:scroll-mt-32">
+    <section id="projects" className="pt-12 lg:pt-16 pb-40 relative overflow-visible scroll-mt-24 md:scroll-mt-32">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
