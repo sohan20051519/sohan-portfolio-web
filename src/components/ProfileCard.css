@@ -531,8 +531,8 @@
 
 @media (max-width: 480px) {
   .pc-card {
-    max-height: 240px;
-    aspect-ratio: 0.9;
+    max-height: 280px;
+    aspect-ratio: 0.718;
   }
 
   .pc-details {
