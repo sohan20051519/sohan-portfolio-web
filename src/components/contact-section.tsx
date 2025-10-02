@@ -134,17 +134,6 @@ export function ContactSection() {
                     </a>
                   </Button>
                   
-                  <Button 
-                    variant="outline" 
-                    size="lg"
-                    className="w-full glass border-border-elevated hover:bg-surface-elevated"
-                    asChild
-                  >
-                    <a href="https://sohan.app" target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 h-5 w-5" />
-                      View Portfolio
-                    </a>
-                  </Button>
                 </div>
               </CardContent>
             </Card>

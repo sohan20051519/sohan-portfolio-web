@@ -55,7 +55,7 @@ const projects = [
     title: "sohan.app",
     description: "Personal portfolio website showcasing technical skills and certifications with modern design and responsive layout.",
     technologies: ["React", "TypeScript", "Tailwind CSS", "Responsive Design"],
-    liveUrl: "https://sohan.app",
+    liveUrl: "https://sohan-uiux.vercel.app/",
     githubUrl: "https://github.com/sohan20051519/sohan-ui.ux",
     featured: true,
     image: projectSohanUIUX
