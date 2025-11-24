@@ -34,9 +34,27 @@ const projects = [
     image: projectNammai
   },
   {
-    title: "AI Resume Builder",
-    description: "Intelligent resume creation platform powered by AI that helps users build professional resumes with automated formatting, content suggestions, and industry-specific templates.",
+    title: "VibeFresh - Build pure websites",
+    description: "just by vibing.",
     technologies: ["AI/ML", "React", "TypeScript", "Natural Language Processing", "PDF Generation"],
+    liveUrl: "https://vibe-fresh.vercel.app/",
+    githubUrl: "https://github.com/sohan20051519/VibeFresh",
+    featured: true,
+    image: "https://i.postimg.cc/653W5ps8/image.png"
+  },
+  {
+    title: "Devyntra — The End of Manual DevOps",
+    description: "AI-powered DevOps automation platform featuring zero-config CI/CD, smart automation, and seamless cloud integrations.",
+    technologies: ["DevOps", "CI/CD", "Cloud Integration", "Automation", "GCP"],
+    liveUrl: "https://devyntra.vercel.app/",
+    githubUrl: "https://github.com/sohan20051519/Devyntra-Google-Cloud-Run",
+    featured: true,
+    image: "https://i.postimg.cc/CLBKsxc7/image.png"
+  },
+  {
+    title: "AI Resume Builder",
+    description: "",
+    technologies: [],
     liveUrl: "https://resumecv-test.vercel.app/",
     githubUrl: "https://github.com/sohan20051519/resume",
     featured: true,
@@ -44,30 +62,12 @@ const projects = [
   },
   {
     title: "Fake Debit & Credit Card Generator",
-    description: "Secure testing tool for developers that generates realistic-looking fake debit and credit card numbers for testing payment systems and e-commerce applications.",
-    technologies: ["JavaScript", "Card Validation", "Testing Tools", "Security", "Payment Systems"],
+    description: "",
+    technologies: [],
     liveUrl: "https://generatecards.vercel.app/",
     githubUrl: "https://github.com/sohan20051519/card-generator",
     featured: true,
     image: "https://iili.io/KG1qP71.md.png"
-  },
-  {
-    title: "sohan.app",
-    description: "Personal portfolio website showcasing technical skills and certifications with modern design and responsive layout.",
-    technologies: ["React", "TypeScript", "Tailwind CSS", "Responsive Design"],
-    liveUrl: "https://sohan-uiux.vercel.app/",
-    githubUrl: "https://github.com/sohan20051519/sohan-ui.ux",
-    featured: true,
-    image: projectSohanUIUX
-  },
-  {
-    title: "OneOps DevOps Platform",
-    description: "AI-powered DevOps automation platform featuring zero-config CI/CD, smart automation, and seamless cloud integrations.",
-    technologies: ["DevOps", "CI/CD", "Cloud Integration", "Automation", "AI"],
-    liveUrl: "https://oneops-18.vercel.app",
-    githubUrl: "https://github.com/sohan20051519/OneOps-Landing",
-    featured: true,
-    image: projectOneOps
   },
   {
     title: "Sohan Web",
